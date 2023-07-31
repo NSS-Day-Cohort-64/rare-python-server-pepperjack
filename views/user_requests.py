@@ -1,17 +1,10 @@
 import sqlite3
 import json
+import bcrypt
 from datetime import datetime
 
 def login_user(user):
-    """Checks for the user in the database
 
-    Args:
-        user (dict): Contains the username and password of the user trying to login
-
-    Returns:
-        json string: If the user was found will return valid boolean of True and the user's id as the token
-                     If the user was not found will return valid boolean False
-    """
     with sqlite3.connect('./db.sqlite3') as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
@@ -47,6 +40,9 @@ def create_user(user):
     Returns:
         json string: Contains the token of the newly created user
     """
+    # Hash the user's password using bcrypt
+    hashed_password = bcrypt.hashpw(user['password'].encode('utf-8'), bcrypt.gensalt())
+
     with sqlite3.connect('./db.sqlite3') as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
@@ -58,7 +54,7 @@ def create_user(user):
             user['last_name'],
             user['username'],
             user['email'],
-            user['password'],
+            hashed_password.decode('utf-8'),  # Decode the hashed password bytes to store as text
             user['bio'],
             datetime.now()
         ))
