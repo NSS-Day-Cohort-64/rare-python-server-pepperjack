@@ -1,8 +1,8 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
-from views.user import create_user, login_user
-from views import get_all_posts_recent_first
+from views.user_requests import create_user, login_user
+from views.post_requests import get_all_posts_recent_first, get_single_post
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -52,13 +52,21 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_GET(self):
         """Handle Get requests to the server"""
-        self._set_headers(200)
+        
         response = {}
 
-        (resource, id) = self.parse_url()
+        parsed = self.parse_url()
+        (resource, id) = parsed
 
         if resource == "posts":
-            response = get_all_posts_recent_first()
+            if id is not None:
+                response = get_single_post(id)
+                self._set_headers(200)
+            else:
+                response = get_all_posts_recent_first()
+                self._set_headers(200)
+
+        self.wfile.write(response.encode())
 
         self.wfile.write(json.dumps(response).encode())
 
