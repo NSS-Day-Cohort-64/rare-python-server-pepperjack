@@ -1,5 +1,5 @@
 import sqlite3
-from models import Post
+from models import Post, User
 
 
 def get_all_posts_recent_first():
@@ -18,8 +18,20 @@ def get_all_posts_recent_first():
             p.publication_date,
             p.image_url,
             p.content,
-            p.approved
+            p.approved,
+            u.id,
+            u.first_name author_first_name,
+            u.last_name author_last_name,
+            u.email,
+            u.bio,
+            u.username,
+            u.password,
+            u.profile_image_url,
+            u.created_on,
+            u.active
         FROM Posts p
+        JOIN Users u
+            ON u.id = p.user_id
         ORDER BY publication_date DESC
         
         """)
@@ -32,6 +44,11 @@ def get_all_posts_recent_first():
 
             post = Post(row['id'], row['user_id'], row['category_id'], row['title'],
                         row['publication_date'], row['image_url'], row['content'], row['approved'])
+
+            user = User(row['id'], row['author_first_name'], row['author_last_name'], row['email'], row['bio'],
+                        row['username'], row['password'], row['profile_image_url'], row['created_on'], row['active'])
+
+            post.author = user.__dict__
 
             postsList.append(post.__dict__)
 

@@ -98,3 +98,18 @@ INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image
 -- Test Data to confirm login works
 INSERT INTO Users ('first_name', 'last_name','email', 'bio', 'username', 'password', 'profile_image_url', 'created_on', 'active') VALUES ('John', 'Doe', 'john@doe.com', 'I am John Doe', 'johndoe', 'password', 'https://pngtree.com/so/happy', '2019-01-01', 1);
 
+SELECT
+            p.id,
+            p.user_id,
+            p.category_id,
+            p.title,
+            p.publication_date,
+            p.image_url,
+            p.content,
+            p.approved,
+            u.first_name author_first_name,
+            u.last_name author_last_name
+        FROM Posts p
+        JOIN Users u
+            ON u.id = p.user_id
+        ORDER BY publication_date DESC
