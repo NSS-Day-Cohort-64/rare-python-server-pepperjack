@@ -39,7 +39,7 @@ CREATE TABLE "Posts" (
   "image_url" varchar,
   "content" varchar,
   "approved" bit,
-  FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`),
+  FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`)
 );
 
 CREATE TABLE "Comments" (
@@ -92,3 +92,6 @@ INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.c
 
 -- Test Data to confirm login works
 INSERT INTO Users ('first_name', 'last_name','email', 'bio', 'username', 'password', 'profile_image_url', 'created_on', 'active') VALUES ('John', 'Doe', 'john@doe.com', 'I am John Doe', 'johndoe', 'password', 'https://pngtree.com/so/happy', '2019-01-01', 1);
+
+-- Test Data to confirm get_single_post works
+INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content', 'approved') VALUES (1, 1, 'Test Post', '2019-01-01', 'https://pngtree.com/so/happy', 'This is a test post', 1);
