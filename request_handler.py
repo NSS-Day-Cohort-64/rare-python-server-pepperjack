@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
 from views.user import create_user, login_user
+from views import get_all_posts_recent_first
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -44,15 +45,22 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods',
-                        'GET, POST, PUT, DELETE')
+                         'GET, POST, PUT, DELETE')
         self.send_header('Access-Control-Allow-Headers',
-                        'X-Requested-With, Content-Type, Accept')
+                         'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
     def do_GET(self):
         """Handle Get requests to the server"""
-        pass
+        self._set_headers(200)
+        response = {}
 
+        (resource, id) = self.parse_url()
+
+        if resource == "posts":
+            response = get_all_posts_recent_first()
+
+        self.wfile.write(json.dumps(response).encode())
 
     def do_POST(self):
         """Make a post request to the server"""

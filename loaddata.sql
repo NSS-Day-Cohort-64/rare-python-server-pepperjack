@@ -40,6 +40,7 @@ CREATE TABLE "Posts" (
   "content" varchar,
   "approved" bit,
   FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`),
+  FOREIGN KEY(`category_id`) REFERENCES `Categories`(`id`),
 );
 
 CREATE TABLE "Comments" (
@@ -89,6 +90,11 @@ INSERT INTO Categories ('label') VALUES ('News');
 INSERT INTO Tags ('label') VALUES ('JavaScript');
 INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.com/so/happy');
 
+--Test Data for posts
+INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content', 'approved') VALUES (1, 1, 'Top 5 Most Iconic Housewives', '2023-07-31' ,'https://i.imgur.com/3SUyk7F.png', '1. Lisa Vanderpump 2. NeNe Leakes 3.Luann de Lesseps 4. Teresa Giudice 5. Lisa Rinna', 1);
+INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content', 'approved') VALUES (1, 1, 'Customizing Your Workspace', '2023-07-28' ,'https://i.imgur.com/HBDRvSA.jpg', 'The newest most addicting pastime', 1);
+
 
 -- Test Data to confirm login works
 INSERT INTO Users ('first_name', 'last_name','email', 'bio', 'username', 'password', 'profile_image_url', 'created_on', 'active') VALUES ('John', 'Doe', 'john@doe.com', 'I am John Doe', 'johndoe', 'password', 'https://pngtree.com/so/happy', '2019-01-01', 1);
+
