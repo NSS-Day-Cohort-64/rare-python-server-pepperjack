@@ -11,18 +11,20 @@ def get_single_post(user):
 
         db_cursor.execute("""
         SELECT
+            p.id,
             p.user_id,
             p.category_id,
             p.title,
             p.publication_date,
-            p.content
+            p.image_url,
+            p.content,
+            p.approved
         FROM Posts p
         WHERE p.id = ?
-        """, (user['id'], ))
+        """, ( user, ))
 
         data = db_cursor.fetchone()
 
         post = Post(data['id'], data['user_id'], data['category_id'], data['title'], data['publication_date'], data['image_url'], data['content'], data['approved'])
 
-
-        return json.dumps(post.__dict__)
+        return post.__dict__
