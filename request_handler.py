@@ -3,6 +3,7 @@ import json
 from views import (get_all_categories, create_user, login_user,
             get_all_posts_recent_first, get_single_post, create_category)
 
+
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
 
@@ -50,14 +51,14 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_GET(self):
         """Handle Get requests to the server"""
-        self._set_headers(200)  # Set the response status code to 200 (OK)
         response = {}
         parsed = self.parse_url()
         (resource, id) = parsed
 
         if resource == 'categories':
             categories = get_all_categories()
-            self.wfile.write(json.dumps(categories).encode())  # Send the response as JSON
+            self.wfile.write(json.dumps(categories).encode()
+                             )  # Send the response as JSON
 
         if resource == "posts":
             if id is not None:
