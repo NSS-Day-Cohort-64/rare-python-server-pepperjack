@@ -53,7 +53,6 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_GET(self):
         """Handle Get requests to the server"""
-        self._set_headers(200)  # Set the response status code to 200 (OK)
         response = {}
         parsed = self.parse_url()
         (resource, id) = parsed
