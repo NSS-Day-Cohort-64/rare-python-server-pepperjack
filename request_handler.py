@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views import (get_all_categories, create_user, login_user,
-            get_all_posts_recent_first, get_single_post, create_category)
+                   get_all_posts_recent_first, get_single_post, create_category)
 
 
 class HandleRequests(BaseHTTPRequestHandler):

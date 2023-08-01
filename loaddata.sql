@@ -96,3 +96,8 @@ INSERT INTO Users ('first_name', 'last_name','email', 'bio', 'username', 'passwo
 
 -- Test Data to confirm get_single_post works
 INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content', 'approved') VALUES (1, 1, 'Test Post', '2019-01-01', 'https://pngtree.com/so/happy', 'This is a test post', 1);
+INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content', 'approved') VALUES (1, 1, 'Top 5 Most Iconic Housewives', '2023-07-31' ,'https://i.imgur.com/3SUyk7F.png', '1. Lisa Vanderpump 2. NeNe Leakes 3.Luann de Lesseps 4. Teresa Giudice 5. Lisa Rinna', 1);
+INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content', 'approved') VALUES (1, 1, 'Customizing Your Workspace', '2023-07-28' ,'https://i.imgur.com/HBDRvSA.jpg', 'The newest most addicting pastime', 1);
+
+INSERT INTO Tags ('label') VALUES ('Pop Culture');
+INSERT INTO Tags ('label') VALUES ('Home');
