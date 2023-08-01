@@ -4,7 +4,6 @@ from views.user_requests import create_user, login_user
 from views.post_requests import get_all_posts_recent_first, get_single_post
 from views.category_requests import create_category
 
-
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
 
@@ -65,8 +64,6 @@ class HandleRequests(BaseHTTPRequestHandler):
             else:
                 response = get_all_posts_recent_first()
                 self._set_headers(200)
-
-        self.wfile.write(json.dumps(response).encode())
 
         self.wfile.write(json.dumps(response).encode())
 

@@ -1,7 +1,7 @@
-import sqlite3
 import json
+import sqlite3
 from datetime import datetime
-from models.post import Post
+from models import Post
 
 
 def get_all_posts_recent_first():
@@ -39,7 +39,7 @@ def get_all_posts_recent_first():
 
     return postsList
 
-  def get_single_post(user):
+def get_single_post(user):
     """Gets a single post from the database"""
     with sqlite3.connect('./db.sqlite3') as conn:
         conn.row_factory = sqlite3.Row
