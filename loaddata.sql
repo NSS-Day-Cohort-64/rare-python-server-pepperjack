@@ -95,9 +95,15 @@ INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.c
 INSERT INTO Users ('first_name', 'last_name','email', 'bio', 'username', 'password', 'profile_image_url', 'created_on', 'active') VALUES ('John', 'Doe', 'john@doe.com', 'I am John Doe', 'johndoe', 'password', 'https://pngtree.com/so/happy', '2019-01-01', 1);
 
 -- Test Data to confirm get_single_post works
+<<<<<<< HEAD
 INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content', 'approved') VALUES (1, 1, 'Test Post', '2019-01-01', 'https://pngtree.com/so/happy', 'This is a test post', 1);
 INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content', 'approved') VALUES (1, 1, 'Top 5 Most Iconic Housewives', '2023-07-31' ,'https://i.imgur.com/3SUyk7F.png', '1. Lisa Vanderpump 2. NeNe Leakes 3.Luann de Lesseps 4. Teresa Giudice 5. Lisa Rinna', 1);
 INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content', 'approved') VALUES (1, 1, 'Customizing Your Workspace', '2023-07-28' ,'https://i.imgur.com/HBDRvSA.jpg', 'The newest most addicting pastime', 1);
 
 INSERT INTO Tags ('label') VALUES ('Pop Culture');
 INSERT INTO Tags ('label') VALUES ('Home');
+=======
+INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content', 'approved') VALUES (2, 1, 'Test Post for 2', '2020-03-30', 'https://pngtree.com/so/sad', 'This is another test post that is different', 1);
+
+SELECT * FROM Posts;
+>>>>>>> main
