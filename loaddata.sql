@@ -40,6 +40,7 @@ CREATE TABLE "Posts" (
   "content" varchar,
   "approved" bit,
   FOREIGN KEY(`user_id`) REFERENCES `Users`(`id`)
+  FOREIGN KEY(`category_id`) REFERENCES `Categories`(`id`)
 );
 
 CREATE TABLE "Comments" (
@@ -93,23 +94,5 @@ INSERT INTO Reactions ('label', 'image_url') VALUES ('happy', 'https://pngtree.c
 -- Test Data to confirm login works
 INSERT INTO Users ('first_name', 'last_name','email', 'bio', 'username', 'password', 'profile_image_url', 'created_on', 'active') VALUES ('John', 'Doe', 'john@doe.com', 'I am John Doe', 'johndoe', 'password', 'https://pngtree.com/so/happy', '2019-01-01', 1);
 
-<<<<<<< HEAD
-SELECT
-            p.id,
-            p.user_id,
-            p.category_id,
-            p.title,
-            p.publication_date,
-            p.image_url,
-            p.content,
-            p.approved,
-            u.first_name author_first_name,
-            u.last_name author_last_name
-        FROM Posts p
-        JOIN Users u
-            ON u.id = p.user_id
-        ORDER BY publication_date DESC
-=======
 -- Test Data to confirm get_single_post works
 INSERT INTO Posts ('user_id', 'category_id', 'title', 'publication_date', 'image_url', 'content', 'approved') VALUES (1, 1, 'Test Post', '2019-01-01', 'https://pngtree.com/so/happy', 'This is a test post', 1);
->>>>>>> c967474a70ca07f107bf732e495a4ba98abb2712
