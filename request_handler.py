@@ -66,7 +66,7 @@ class HandleRequests(BaseHTTPRequestHandler):
                 response = get_all_posts_recent_first()
                 self._set_headers(200)
 
-        self.wfile.write(response.encode())
+        self.wfile.write(json.dumps(response).encode())
 
         self.wfile.write(json.dumps(response).encode())
 
