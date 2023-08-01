@@ -1,10 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
-
-from views.category_requests import get_all_categories
-from views.user_requests import create_user, login_user
-from views.post_requests import get_all_posts_recent_first, get_single_post
-from views.category_requests import create_category
+from views import (get_all_categories, create_user, login_user,
+            get_all_posts_recent_first, get_single_post, create_category)
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""

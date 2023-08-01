@@ -1,4 +1,5 @@
 import sqlite3
+from models import Category
 
 def create_category(new_category):
     with sqlite3.connect("./db.sqlite3") as conn:
@@ -16,7 +17,6 @@ def create_category(new_category):
         new_category['id'] = category_id
 
     return new_category
-from models import Category
 
 def get_all_categories():
     """
