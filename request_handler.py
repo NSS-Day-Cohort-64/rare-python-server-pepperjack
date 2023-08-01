@@ -44,9 +44,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods',
-                         'GET, POST, PUT, DELETE')
+                            'GET, POST, PUT, DELETE')
         self.send_header('Access-Control-Allow-Headers',
-                         'X-Requested-With, Content-Type, Accept')
+                        'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
     def do_GET(self):
@@ -56,9 +56,8 @@ class HandleRequests(BaseHTTPRequestHandler):
         (resource, id) = parsed
 
         if resource == 'categories':
-            categories = get_all_categories()
-            self.wfile.write(json.dumps(categories).encode()
-                             )  # Send the response as JSON
+            response = get_all_categories()
+            self._set_headers(200)
 
         if resource == "posts":
             if id is not None:

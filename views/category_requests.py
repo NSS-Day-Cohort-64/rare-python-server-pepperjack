@@ -41,10 +41,7 @@ def get_all_categories():
         # Convert rows to a list of dictionaries
         categories = []
         for row in rows:
-            category = {
-                "id": row["id"],
-                "label": row["label"]
-            }
-            categories.append(category)
+            category = Category(row["id"], row["label"])
+            categories.append(category.__dict__)
 
         return categories
