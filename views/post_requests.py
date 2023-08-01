@@ -2,7 +2,6 @@ import sqlite3
 from datetime import datetime
 from models import Post, User, Category
 
-
 def get_all_posts_recent_first():
 
     with sqlite3.connect("./db.sqlite3") as conn:
