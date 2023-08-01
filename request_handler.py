@@ -2,6 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
 from views.user import create_user, login_user
+from views.category_requests import get_all_categories
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -51,8 +52,12 @@ class HandleRequests(BaseHTTPRequestHandler):
 
     def do_GET(self):
         """Handle Get requests to the server"""
-        pass
+        self._set_headers(200)  # Set the response status code to 200 (OK)
+        resource, _ = self.parse_url()
 
+        if resource == 'categories':
+            categories = get_all_categories()
+            self.wfile.write(json.dumps(categories).encode())  # Send the response as JSON
 
     def do_POST(self):
         """Make a post request to the server"""
