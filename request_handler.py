@@ -61,6 +61,7 @@ class HandleRequests(BaseHTTPRequestHandler):
 
         if resource == 'categories':
             categories = get_all_categories()
+            self._set_headers(200)
 
         elif resource == "posts":
             if len(parsed) == 3 and key == 'user_id':
