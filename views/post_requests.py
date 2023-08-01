@@ -1,6 +1,7 @@
 import sqlite3
-from models import Post, User
 from datetime import datetime
+from models import Post, User, Category
+
 
 def get_all_posts_recent_first():
 
@@ -28,10 +29,14 @@ def get_all_posts_recent_first():
             u.password,
             u.profile_image_url,
             u.created_on,
-            u.active
+            u.active,
+            c.id,
+            c.label             
         FROM Posts p
         JOIN Users u
             ON u.id = p.user_id
+        JOIN Categories c
+            ON c.id = p.category_id
         ORDER BY publication_date DESC
         
         """)
@@ -48,13 +53,17 @@ def get_all_posts_recent_first():
             user = User(row['id'], row['author_first_name'], row['author_last_name'], row['email'], row['bio'],
                         row['username'], row['password'], row['profile_image_url'], row['created_on'], row['active'])
 
+            category = Category(row['id'], row['label'])
+
             post.author = user.__dict__
+            post.category = category.__dict__
 
             postsList.append(post.__dict__)
 
     return postsList
 
-  def get_single_post(user):
+
+def get_single_post(user):
     """Gets a single post from the database"""
     with sqlite3.connect('./db.sqlite3') as conn:
         conn.row_factory = sqlite3.Row
@@ -72,10 +81,11 @@ def get_all_posts_recent_first():
             p.approved
         FROM Posts p
         WHERE p.id = ?
-        """, ( user, ))
+        """, (user, ))
 
         data = db_cursor.fetchone()
 
-        post = Post(data['id'], data['user_id'], data['category_id'], data['title'], data['publication_date'], data['image_url'], data['content'], data['approved'])
+        post = Post(data['id'], data['user_id'], data['category_id'], data['title'],
+                    data['publication_date'], data['image_url'], data['content'], data['approved'])
 
         return post.__dict__
