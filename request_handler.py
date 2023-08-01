@@ -1,8 +1,9 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 
-from views.user import create_user, login_user
 from views.category_requests import get_all_categories
+from views.user_requests import create_user, login_user
+from views.post_requests import get_all_posts_recent_first, get_single_post
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -45,19 +46,31 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods',
-                        'GET, POST, PUT, DELETE')
+                         'GET, POST, PUT, DELETE')
         self.send_header('Access-Control-Allow-Headers',
-                        'X-Requested-With, Content-Type, Accept')
+                         'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
     def do_GET(self):
         """Handle Get requests to the server"""
         self._set_headers(200)  # Set the response status code to 200 (OK)
-        resource, _ = self.parse_url()
+        response = {}
+        parsed = self.parse_url()
+        (resource, id) = parsed
 
         if resource == 'categories':
             categories = get_all_categories()
             self.wfile.write(json.dumps(categories).encode())  # Send the response as JSON
+
+        if resource == "posts":
+            if id is not None:
+                response = get_single_post(id)
+                self._set_headers(200)
+            else:
+                response = get_all_posts_recent_first()
+                self._set_headers(200)
+
+        self.wfile.write(json.dumps(response).encode())
 
     def do_POST(self):
         """Make a post request to the server"""

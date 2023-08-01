@@ -1,31 +1,25 @@
 import sqlite3
 import json
+import bcrypt
 from datetime import datetime
 
 def login_user(user):
-    """Checks for the user in the database
 
-    Args:
-        user (dict): Contains the username and password of the user trying to login
-
-    Returns:
-        json string: If the user was found will return valid boolean of True and the user's id as the token
-                    If the user was not found will return valid boolean False
-    """
     with sqlite3.connect('./db.sqlite3') as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
+        # Fetch the user's hashed password from the database
         db_cursor.execute("""
-            select id, username
+            select id, password
             from Users
             where username = ?
-            and password = ?
-        """, (user['username'], user['password']))
+        """, (user['username'], ))
 
         user_from_db = db_cursor.fetchone()
 
-        if user_from_db is not None:
+        # If the user was found and the hashed passwords match
+        if user_from_db is not None and bcrypt.checkpw(user['password'].encode('utf-8'), user_from_db['password'].encode('utf-8')):
             response = {
                 'valid': True,
                 'token': user_from_db['id']
@@ -38,6 +32,7 @@ def login_user(user):
         return json.dumps(response)
 
 
+
 def create_user(user):
     """Adds a user to the database when they register
 
@@ -47,6 +42,9 @@ def create_user(user):
     Returns:
         json string: Contains the token of the newly created user
     """
+    # Hash the user's password using bcrypt
+    hashed_password = bcrypt.hashpw(user['password'].encode('utf-8'), bcrypt.gensalt())
+
     with sqlite3.connect('./db.sqlite3') as conn:
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
@@ -58,7 +56,7 @@ def create_user(user):
             user['last_name'],
             user['username'],
             user['email'],
-            user['password'],
+            hashed_password.decode('utf-8'),  # Decode the hashed password bytes to store as text
             user['bio'],
             datetime.now()
         ))
