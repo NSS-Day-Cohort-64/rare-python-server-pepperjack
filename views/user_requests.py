@@ -9,16 +9,17 @@ def login_user(user):
         conn.row_factory = sqlite3.Row
         db_cursor = conn.cursor()
 
+        # Fetch the user's hashed password from the database
         db_cursor.execute("""
-            select id, username
+            select id, password
             from Users
             where username = ?
-            and password = ?
-        """, (user['username'], user['password']))
+        """, (user['username'], ))
 
         user_from_db = db_cursor.fetchone()
 
-        if user_from_db is not None:
+        # If the user was found and the hashed passwords match
+        if user_from_db is not None and bcrypt.checkpw(user['password'].encode('utf-8'), user_from_db['password'].encode('utf-8')):
             response = {
                 'valid': True,
                 'token': user_from_db['id']
@@ -29,6 +30,7 @@ def login_user(user):
             }
 
         return json.dumps(response)
+
 
 
 def create_user(user):
