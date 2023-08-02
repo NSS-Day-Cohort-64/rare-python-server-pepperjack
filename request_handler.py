@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views import (create_user, login_user, get_all_users,
                    get_all_categories, create_category,
-                   get_all_posts_recent_first, get_single_post, get_posts_by_user_id, create_post,
+                   get_all_posts_recent_first, get_single_post, get_posts_by_user_id, create_post, edit_post,
                    get_all_tags_alphabetical, create_tag)
 
 
@@ -108,8 +108,25 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.wfile.write(response.encode())
 
     def do_PUT(self):
-        """Handles PUT requests to the server"""
-        pass
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
+
+        # Parse the URL
+        (resource, id) = self.parse_url()
+
+        success = False
+
+        if resource == "posts":
+            success = edit_post(id, post_body)
+        # rest of the elif's
+
+        if success:
+            self._set_headers(204)
+            self.wfile.write("".encode())
+        else:
+            self._set_headers(404)
+            error_message = ""
 
     def do_DELETE(self):
         """Handle DELETE Requests"""
