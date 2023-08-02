@@ -2,7 +2,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views import (create_user, login_user, get_all_users,
                    get_all_categories, create_category,
-                   get_all_posts_recent_first, get_single_post, get_posts_by_user_id, create_post,
+                   get_all_posts_recent_first, get_single_post, get_posts_by_user_id, create_post, edit_post,
                    get_all_tags_alphabetical, create_tag)
 
 
@@ -113,7 +113,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         post_body = json.loads(post_body)
 
         # Parse the URL
-        (resource, id) = self.parse_url(self.path)
+        (resource, id) = self.parse_url()
 
         success = False
 
