@@ -2,6 +2,7 @@ import sqlite3
 from datetime import datetime
 from models import Post, User, Category
 
+
 def get_all_posts_recent_first():
 
     with sqlite3.connect("./db.sqlite3") as conn:
@@ -113,6 +114,7 @@ def get_single_post(user):
 
         return post.__dict__
 
+
 def get_posts_by_user_id(user_id):
     """Gets all posts from the database by a specific user"""
     with sqlite3.connect('./db.sqlite3') as conn:
@@ -157,6 +159,7 @@ def get_posts_by_user_id(user_id):
             postsList.append(post.__dict__)
 
     return postsList
+
 
 def create_post(new_post):
     with sqlite3.connect("./db.sqlite3") as conn:
