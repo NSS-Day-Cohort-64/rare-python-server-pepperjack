@@ -2,6 +2,7 @@ import sqlite3
 import json
 import bcrypt
 from datetime import datetime
+from models import User
 
 def login_user(user):
 
@@ -30,8 +31,6 @@ def login_user(user):
             }
 
         return json.dumps(response)
-
-
 
 def create_user(user):
     """Adds a user to the database when they register
@@ -67,3 +66,34 @@ def create_user(user):
             'token': id,
             'valid': True
         })
+
+def get_all_users():
+    """
+    Get all users
+    """
+    with sqlite3.connect('./db.sqlite3') as conn:
+        conn.row_factory = sqlite3.Row
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+            SELECT id, username, first_name, last_name, email, bio, profile_image_url
+            FROM Users
+            ORDER BY username
+        """)
+
+        dataset = db_cursor.fetchall()
+
+        users = []
+        for row in dataset:
+            user = User(
+                row['id'],
+                row['username'],
+                row['first_name'],
+                row['last_name'],
+                row['email'],
+                row['bio'],
+                row['profile_image_url'] if row['profile_image_url'] else None
+            )
+            users.append(user.__dict__)
+
+        return users

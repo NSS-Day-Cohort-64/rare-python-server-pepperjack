@@ -1,8 +1,13 @@
 import json
-from http.server import BaseHTTPRequestHandler, HTTPServer
-from views import (get_all_categories, create_user, login_user,
-                   get_all_posts_recent_first, get_single_post, create_category, get_posts_by_user_id, get_all_tags_alphabetical)
-
+from views import (get_all_categories,
+                create_user,
+                login_user,
+                get_all_posts_recent_first,
+                get_single_post,
+                create_category,
+                get_posts_by_user_id,
+                get_all_tags_alphabetical,
+                get_all_users)
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -44,9 +49,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods',
-                         'GET, POST, PUT, DELETE')
+                        'GET, POST, PUT, DELETE')
         self.send_header('Access-Control-Allow-Headers',
-                         'X-Requested-With, Content-Type, Accept')
+                        'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
     def do_GET(self):
@@ -77,6 +82,10 @@ class HandleRequests(BaseHTTPRequestHandler):
             else:
                 response = get_all_posts_recent_first()
                 self._set_headers(200)
+        
+        elif resource == 'users':
+            response = get_all_users()
+            self._set_headers(200)
 
         self.wfile.write(json.dumps(response).encode())
 
