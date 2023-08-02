@@ -1,7 +1,7 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
 from views import (get_all_categories, create_user, login_user,
-            get_all_posts_recent_first, get_single_post, create_category, get_posts_by_user_id)
+                   get_all_posts_recent_first, get_single_post, create_category, get_posts_by_user_id, get_all_tags_alphabetical)
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -44,9 +44,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods',
-                        'GET, POST, PUT, DELETE')
+                         'GET, POST, PUT, DELETE')
         self.send_header('Access-Control-Allow-Headers',
-                        'X-Requested-With, Content-Type, Accept')
+                         'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
     def do_GET(self):
@@ -60,7 +60,11 @@ class HandleRequests(BaseHTTPRequestHandler):
             resource, id = parsed
 
         if resource == 'categories':
-            categories = get_all_categories()
+            response = get_all_categories()
+            self._set_headers(200)
+
+        elif resource == 'tags':
+            response = get_all_tags_alphabetical()
             self._set_headers(200)
 
         elif resource == "posts":
@@ -75,7 +79,6 @@ class HandleRequests(BaseHTTPRequestHandler):
                 self._set_headers(200)
 
         self.wfile.write(json.dumps(response).encode())
-
 
     def do_POST(self):
         """Make a post request to the server"""
