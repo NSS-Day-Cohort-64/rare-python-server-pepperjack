@@ -1,10 +1,21 @@
-from http.server import BaseHTTPRequestHandler, HTTPServer
 import json
+<<<<<<< HEAD
 from views import (create_user, login_user,
                    get_all_categories, create_category,
                    get_all_posts_recent_first, get_single_post, get_posts_by_user_id,
                    get_all_tags_alphabetical, create_tag)
 
+=======
+from views import (get_all_categories,
+                create_user,
+                login_user,
+                get_all_posts_recent_first,
+                get_single_post,
+                create_category,
+                get_posts_by_user_id,
+                get_all_tags_alphabetical,
+                get_all_users)
+>>>>>>> d99d101b8a349db53b649d3a112bc121c610cb0a
 
 class HandleRequests(BaseHTTPRequestHandler):
     """Handles the requests to this server"""
@@ -46,9 +57,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header('Access-Control-Allow-Origin', '*')
         self.send_header('Access-Control-Allow-Methods',
-                         'GET, POST, PUT, DELETE')
+                        'GET, POST, PUT, DELETE')
         self.send_header('Access-Control-Allow-Headers',
-                         'X-Requested-With, Content-Type, Accept')
+                        'X-Requested-With, Content-Type, Accept')
         self.end_headers()
 
     def do_GET(self):
@@ -79,6 +90,10 @@ class HandleRequests(BaseHTTPRequestHandler):
             else:
                 response = get_all_posts_recent_first()
                 self._set_headers(200)
+        
+        elif resource == 'users':
+            response = get_all_users()
+            self._set_headers(200)
 
         self.wfile.write(json.dumps(response).encode())
 
@@ -96,8 +111,13 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         if resource == 'categories':
             response = create_category(post_body)
+<<<<<<< HEAD
         if resource == 'tags':
             response = create_tag(post_body)
+=======
+        if resource == 'posts':
+            response = create_post(post_body)
+>>>>>>> d99d101b8a349db53b649d3a112bc121c610cb0a
 
         self.wfile.write(response.encode())
 
