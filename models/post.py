@@ -9,5 +9,5 @@ class Post():
         self.image_url = image_url
         self.content = content
         self.approved = approved
-        self.author = None
+        self.user = None
         self.category = None
