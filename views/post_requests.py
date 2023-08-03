@@ -55,7 +55,7 @@ def get_all_posts_recent_first():
 
             category = Category(row['id'], row['label'])
 
-            post.author = user.__dict__
+            post.user = user.__dict__
             post.category = category.__dict__
 
             postsList.append(post.__dict__)
@@ -109,7 +109,7 @@ def get_single_post(user):
 
         category = Category(data['id'], data['label'])
 
-        post.author = user.__dict__
+        post.user = user.__dict__
         post.category = category.__dict__
 
         return post.__dict__
@@ -132,6 +132,8 @@ def get_posts_by_user_id(user_id):
             p.content,
             p.approved,
             u.id user_id,
+            u.first_name,
+            u.last_name,
             c.id,
             c.label
         FROM Posts p
@@ -153,8 +155,10 @@ def get_posts_by_user_id(user_id):
 
             category = Category(row['id'], row['label'])
 
-            post.author = row['user_id']
+            user = User(row['user_id'], row['first_name'], row['last_name'])
+
             post.category = category.__dict__
+            post.user = user.__dict__
 
             postsList.append(post.__dict__)
 
