@@ -169,17 +169,26 @@ def create_post(new_post):
     with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
 
+        # Insert the basic post information
         db_cursor.execute("""
         INSERT INTO Posts
             (user_id, category_id, title, publication_date, image_url, content, approved)
         VALUES
             (?, ?, ?, ?, ?, ?, ?);
-        """, (new_post.user_id, new_post.category_id, new_post.title, new_post.publication_date,
-              new_post.image_url, new_post.content, new_post.approved))
+        """, (new_post['user_id'], new_post['category_id'], new_post['title'], datetime.now(),
+              new_post['image_url'], new_post['content'], 1))
 
         post_id = db_cursor.lastrowid
+        new_post['id'] = post_id
 
-        new_post.id = post_id
+
+        for tag_id in new_post['tags']:
+            db_cursor.execute("""
+            INSERT INTO PostTags 
+                (post_id, tag_id)
+            VALUES 
+                (?, ?);
+            """, (post_id, tag_id))
 
     return new_post
 

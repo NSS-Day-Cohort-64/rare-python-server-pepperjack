@@ -2,5 +2,10 @@
     "[python]": {
         "editor.defaultFormatter": "ms-python.autopep8"
     },
-    "python.formatting.provider": "none"
+    "python.formatting.provider": "none",
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#370587",
+        "titleBar.activeBackground": "#4D07BD",
+        "titleBar.activeForeground": "#FCFBFF"
+    }
 }
