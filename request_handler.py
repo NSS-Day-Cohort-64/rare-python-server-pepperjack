@@ -1,7 +1,7 @@
 import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from views import (get_all_categories, create_user, login_user,
-                   get_all_posts_recent_first, get_single_post, create_category, get_posts_by_user_id, get_all_tags_alphabetical)
+                   get_all_posts_recent_first, get_single_post, create_category, get_posts_by_user_id, get_all_tags_alphabetical, create_post)
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -85,7 +85,7 @@ class HandleRequests(BaseHTTPRequestHandler):
         self._set_headers(201)
         content_len = int(self.headers.get('content-length', 0))
         post_body = json.loads(self.rfile.read(content_len))
-        response = ''
+        response = {}
         resource, _ = self.parse_url()
 
         if resource == 'login':
@@ -97,7 +97,8 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == 'posts':
             response = create_post(post_body)
 
-        self.wfile.write(response.encode())
+        self.wfile.write(json.dumps(response).encode())
+
 
     def do_PUT(self):
         """Handles PUT requests to the server"""

@@ -32,7 +32,6 @@ def login_user(user):
         return json.dumps(response)
 
 
-
 def create_user(user):
     """Adds a user to the database when they register
 
