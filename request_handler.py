@@ -3,7 +3,7 @@ import json
 from views import (create_user, login_user, get_all_users,
                    get_all_categories, create_category,
                    get_all_posts_recent_first, get_single_post, get_posts_by_user_id, create_post, edit_post,
-                   get_all_tags_alphabetical, create_tag)
+                   get_all_tags_alphabetical, create_tag, get_postTags_by_post_id)
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -78,6 +78,11 @@ class HandleRequests(BaseHTTPRequestHandler):
                 self._set_headers(200)
             else:
                 response = get_all_posts_recent_first()
+                self._set_headers(200)
+
+        elif resource == 'postTags':
+            if len(parsed) == 3 and key == 'post_id':
+                response = get_postTags_by_post_id(int(value))
                 self._set_headers(200)
 
         elif resource == 'users':
