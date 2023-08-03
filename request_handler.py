@@ -105,7 +105,9 @@ class HandleRequests(BaseHTTPRequestHandler):
         if resource == 'posts':
             response = create_post(post_body)
 
-        self.wfile.write(response.encode())
+        # Convert the response dictionary to JSON and encode to bytes
+        response_data = json.dumps(response).encode()
+        self.wfile.write(response_data)
 
     def do_PUT(self):
         content_len = int(self.headers.get('content-length', 0))
