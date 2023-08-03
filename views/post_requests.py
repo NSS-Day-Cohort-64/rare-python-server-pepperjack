@@ -2,6 +2,7 @@ import sqlite3
 from datetime import datetime
 from models import Post, User, Category
 
+
 def get_all_posts_recent_first():
 
     with sqlite3.connect("./db.sqlite3") as conn:
@@ -54,7 +55,7 @@ def get_all_posts_recent_first():
 
             category = Category(row['id'], row['label'])
 
-            post.author = user.__dict__
+            post.user = user.__dict__
             post.category = category.__dict__
 
             postsList.append(post.__dict__)
@@ -108,10 +109,11 @@ def get_single_post(user):
 
         category = Category(data['id'], data['label'])
 
-        post.author = user.__dict__
+        post.user = user.__dict__
         post.category = category.__dict__
 
         return post.__dict__
+
 
 def get_posts_by_user_id(user_id):
     """Gets all posts from the database by a specific user"""
@@ -130,6 +132,8 @@ def get_posts_by_user_id(user_id):
             p.content,
             p.approved,
             u.id user_id,
+            u.first_name,
+            u.last_name,
             c.id,
             c.label
         FROM Posts p
@@ -151,12 +155,15 @@ def get_posts_by_user_id(user_id):
 
             category = Category(row['id'], row['label'])
 
-            post.author = row['user_id']
+            user = User(row['user_id'], row['first_name'], row['last_name'])
+
             post.category = category.__dict__
+            post.user = user.__dict__
 
             postsList.append(post.__dict__)
 
     return postsList
+
 
 def create_post(new_post):
     with sqlite3.connect("./db.sqlite3") as conn:
@@ -184,3 +191,32 @@ def create_post(new_post):
             """, (post_id, tag_id))
 
     return new_post
+
+
+def edit_post(id, new_post):
+    with sqlite3.connect("./db.sqlite3") as conn:
+        db_cursor = conn.cursor()
+
+        db_cursor.execute("""
+        UPDATE Posts
+            SET
+                user_id = ?,
+                category_id = ?,
+                title = ?,
+                publication_date = ?,
+                image_url = ?,
+                content = ?,
+                approved = ?
+        WHERE id = ?
+        """, (new_post['user_id'], new_post['category_id'],
+              new_post['title'], new_post['publication_date'],
+              new_post['image_url'], new_post['content'], new_post['approved'], id, ))
+
+        rows_affected = db_cursor.rowcount
+
+        if rows_affected == 0:
+            # Forces 404 response by main module
+            return False
+        else:
+            # Forces 204 response by main module
+            return True

@@ -1,4 +1,7 @@
-class User():
+class User:
+    """
+    new User class
+    """
 
     def __init__(self, id, first_name=None, last_name=None, email=None, bio=None, username=None, password=None, profile_image_url=None, created_on=None, active=None):
         self.id = id

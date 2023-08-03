@@ -1,7 +1,9 @@
-import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from views import (get_all_categories, create_user, login_user,
-                   get_all_posts_recent_first, get_single_post, create_category, get_posts_by_user_id, get_all_tags_alphabetical, create_post)
+import json
+from views import (create_user, login_user, get_all_users,
+                   get_all_categories, create_category,
+                   get_all_posts_recent_first, get_single_post, get_posts_by_user_id, create_post, edit_post,
+                   get_all_tags_alphabetical, create_tag)
 
 
 class HandleRequests(BaseHTTPRequestHandler):
@@ -78,6 +80,10 @@ class HandleRequests(BaseHTTPRequestHandler):
                 response = get_all_posts_recent_first()
                 self._set_headers(200)
 
+        elif resource == 'users':
+            response = get_all_users()
+            self._set_headers(200)
+
         self.wfile.write(json.dumps(response).encode())
 
     def do_POST(self):
@@ -94,15 +100,35 @@ class HandleRequests(BaseHTTPRequestHandler):
             response = create_user(post_body)
         if resource == 'categories':
             response = create_category(post_body)
+        if resource == 'tags':
+            response = create_tag(post_body)
         if resource == 'posts':
             response = create_post(post_body)
 
-        self.wfile.write(json.dumps(response).encode())
-
+        # Convert the response dictionary to JSON and encode to bytes
+        response_data = json.dumps(response).encode()
+        self.wfile.write(response_data)
 
     def do_PUT(self):
-        """Handles PUT requests to the server"""
-        pass
+        content_len = int(self.headers.get('content-length', 0))
+        post_body = self.rfile.read(content_len)
+        post_body = json.loads(post_body)
+
+        # Parse the URL
+        (resource, id) = self.parse_url()
+
+        success = False
+
+        if resource == "posts":
+            success = edit_post(id, post_body)
+        # rest of the elif's
+
+        if success:
+            self._set_headers(204)
+            self.wfile.write("".encode())
+        else:
+            self._set_headers(404)
+            error_message = ""
 
     def do_DELETE(self):
         """Handle DELETE Requests"""
