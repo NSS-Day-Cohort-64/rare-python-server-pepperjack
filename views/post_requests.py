@@ -181,7 +181,6 @@ def create_post(new_post):
         post_id = db_cursor.lastrowid
         new_post['id'] = post_id
 
-
         for tag_id in new_post['tags']:
             db_cursor.execute("""
             INSERT INTO PostTags 
@@ -203,14 +202,12 @@ def edit_post(id, new_post):
                 user_id = ?,
                 category_id = ?,
                 title = ?,
-                publication_date = ?,
                 image_url = ?,
-                content = ?,
-                approved = ?
+                content = ?
         WHERE id = ?
         """, (new_post['user_id'], new_post['category_id'],
-              new_post['title'], new_post['publication_date'],
-              new_post['image_url'], new_post['content'], new_post['approved'], id, ))
+              new_post['title'],
+              new_post['image_url'], new_post['content'], id, ))
 
         rows_affected = db_cursor.rowcount
 
