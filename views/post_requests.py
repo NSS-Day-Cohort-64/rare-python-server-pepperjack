@@ -202,14 +202,12 @@ def edit_post(id, new_post):
                 user_id = ?,
                 category_id = ?,
                 title = ?,
-                publication_date = ?,
                 image_url = ?,
-                content = ?,
-                approved = ?
+                content = ?
         WHERE id = ?
         """, (new_post['user_id'], new_post['category_id'],
-              new_post['title'], datetime.now(),
-              new_post['image_url'], new_post['content'], 1))
+              new_post['title'],
+              new_post['image_url'], new_post['content'], id, ))
 
         rows_affected = db_cursor.rowcount
 
