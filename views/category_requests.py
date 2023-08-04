@@ -1,6 +1,7 @@
 import sqlite3
 from models import Category
 
+
 def create_category(new_category):
     with sqlite3.connect("./db.sqlite3") as conn:
         db_cursor = conn.cursor()
@@ -18,6 +19,7 @@ def create_category(new_category):
 
     return new_category
 
+
 def get_all_categories():
     """
     Get all categories from the Categories table.
@@ -32,7 +34,7 @@ def get_all_categories():
         db_cursor.execute("""
             SELECT id, label
             FROM Categories
-            ORDER BY label
+            ORDER BY LOWER(label)
         """)
 
         # Fetch all rows from the database as dictionaries
