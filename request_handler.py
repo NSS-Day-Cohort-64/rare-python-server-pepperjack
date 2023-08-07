@@ -99,20 +99,29 @@ class HandleRequests(BaseHTTPRequestHandler):
         response = {}
         resource, _ = self.parse_url()
 
+        dumps = False
+
         if resource == 'login':
             response = login_user(post_body)
+
         if resource == 'register':
             response = create_user(post_body)
+
         if resource == 'categories':
             response = create_category(post_body)
+            dumps = True
         if resource == 'tags':
             response = create_tag(post_body)
+            dumps = True
         if resource == 'posts':
             response = create_post(post_body)
+            dumps = True
 
-        # Convert the response dictionary to JSON and encode to bytes
-        response_data = json.dumps(response).encode()
-        self.wfile.write(response_data)
+        if dumps:
+            response_data = json.dumps(response).encode()
+            self.wfile.write(response_data)
+        else:
+            self.wfile.write(response.encode())
 
     def do_PUT(self):
         content_len = int(self.headers.get('content-length', 0))
